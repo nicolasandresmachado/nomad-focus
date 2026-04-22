@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic'
-
 'use client'
+
+export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
@@ -32,7 +32,14 @@ export default function ClientesPage() {
 
   const addCompany = async () => {
     if (!name) return
-    await supabase.from('companies').insert({ name, website, billing_email: email })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+    await supabase.from('companies').insert({ 
+      name, 
+      website, 
+      billing_email: email,
+      user_id: user.id 
+    })
     setName(''); setWebsite(''); setEmail('')
     setShowForm(false)
     fetchCompanies()
