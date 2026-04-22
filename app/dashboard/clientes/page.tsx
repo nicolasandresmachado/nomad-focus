@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
+import { useRouter } from 'next/navigation'
 
 type Company = {
   id: string
@@ -18,6 +19,7 @@ export default function ClientesPage() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const router = useRouter()
   const [name, setName] = useState('')
   const [website, setWebsite] = useState('')
   const [email, setEmail] = useState('')
@@ -92,7 +94,7 @@ export default function ClientesPage() {
               background: '#251A28', borderRadius: 14, padding: '20px 24px',
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               cursor: 'pointer'
-            }}>
+            }} onClick={() => router.push(`/dashboard/clientes/${company.id}`)}>
               <div>
                 <p style={{ color: '#F5EFF5', fontSize: 15, margin: '0 0 4px', fontFamily: 'serif' }}>{company.name}</p>
                 <p style={{ color: '#B89FBD', fontSize: 12, margin: 0 }}>{company.billing_email || company.website || '—'}</p>
